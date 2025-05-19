@@ -1,0 +1,390 @@
+{
+	"info": {
+		"_postman_id": "bfa97006-a3d4-418f-891a-b65cc9481820",
+		"name": "EMP-MGMT-SYSTEM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28657987"
+	},
+	"item": [
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "List Employees",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token c94421af509885d166f4f8286aca82402331321c",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "127.0.01:8000/api/employees/",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"employees",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Employee by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token c94421af509885d166f4f8286aca82402331321c",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "127.0.01:8000/api/employees/2/",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"employees",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Employee",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token c94421af509885d166f4f8286aca82402331321c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employee_id\": \"2\",\n  \"name\": \"Ananya\",\n  \"email\": \"anu@abc.com\",\n  \"designation\": \"Senior Accountant\",\n  \"department\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.01:8000/api/employees/2/",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"employees",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token c94421af509885d166f4f8286aca82402331321c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employee_id\": \"4\",\n  \"name\": \"Zain\",\n  \"email\": \"z@zed.com\",\n  \"designation\": \"Junior Rep\",\n  \"department\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.01:8000/api/employees/",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"employees",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employee By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token c94421af509885d166f4f8286aca82402331321c",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "127.0.01:8000/api/employees/1/",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"employees",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Departments",
+			"item": [
+				{
+					"name": "List Departments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token c94421af509885d166f4f8286aca82402331321c",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "127.0.01:8000/api/departments/",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"departments",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Department by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token c94421af509885d166f4f8286aca82402331321c",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "127.0.01:8000/api/departments/1",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"departments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Department",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token c94421af509885d166f4f8286aca82402331321c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"department_id\": \"1\",\n    \"name\": \"IT and Software\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.01:8000/api/departments/1/",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"departments",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Department",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token c94421af509885d166f4f8286aca82402331321c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"department_id\": \"4\",\n    \"name\": \"Hardware\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.01:8000/api/departments/",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"departments",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Department by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token c94421af509885d166f4f8286aca82402331321c",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "127.0.01:8000/api/departments/4/",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"departments",
+								"4",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token c94421af509885d166f4f8286aca82402331321c",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "test2",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "test2",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test2@test.co",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.01:8000/api/auth/register/",
+					"host": [
+						"127",
+						"0",
+						"01"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

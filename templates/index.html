@@ -1,173 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Employee Management</title>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .employee-item { margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-        #loginForm, #registerForm, #employeeList { margin-top: 20px; }
-        .hidden { display: none; }
-        .auth-toggle { margin-top: 10px; color: blue; cursor: pointer; text-decoration: underline; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
-<body>
-    <h1>Employee Management System</h1>
-    
-    <div id="loginForm">
-        <h2>Login</h2>
-        <form id="authForm">
+<body class="bg-light">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">Employee Management System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="text-primary mb-0">Dashboard</h1>
             <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" required>
+                <span class="badge bg-secondary">Welcome, {{ request.user.username }}</span>
             </div>
-            <div style="margin-top: 10px;">
-                <label for="password">Password:</label>
-                <input type="password" id="password" required>
+        </div>
+
+        <div class="row">
+            <!-- Departments List -->
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Departments</h5>
+                        <span class="badge bg-light text-dark">{{ departments.count }}</span>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% for dept in departments %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="bi bi-building me-2"></i>
+                                {{ dept.name }}
+                            </div>
+                            <span class="badge bg-info rounded-pill">ID: {{ dept.department_id }}</span>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-muted">No departments found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-            <button type="submit" style="margin-top: 10px;">Login</button>
-        </form>
-        <p class="auth-toggle" onclick="toggleAuthForms()">Don't have an account? Register here</p>
+
+            <!-- Employees List -->
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Employee List</h5>
+                        <span class="badge bg-light text-dark">{{ employees.count }}</span>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% for emp in employees %}
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h5 class="mb-1">
+                                        <i class="bi bi-person-circle me-2"></i>
+                                        {{ emp.name }}
+                                        <small class="text-muted">(ID: {{ emp.employee_id }})</small>
+                                    </h5>
+                                    <p class="mb-0">
+                                        <strong>Department:</strong> {{ emp.department.name }}<br>
+                                        <strong>Position:</strong> {{ emp.designation }}<br>
+                                        <strong>Email:</strong> <a href="mailto:{{ emp.email }}">{{ emp.email }}</a>
+                                    </p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <span class="badge bg-secondary mb-2">Joined: {{ emp.date_joined|date:"M d, Y" }}</span>
+                                </div>
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-muted">No employees found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div id="registerForm" class="hidden">
-        <h2>Register</h2>
-        <form id="regForm">
-            <div>
-                <label for="reg-username">Username:</label>
-                <input type="text" id="reg-username" required>
-            </div>
-            <div style="margin-top: 10px;">
-                <label for="reg-email">Email:</label>
-                <input type="email" id="reg-email" required>
-            </div>
-            <div style="margin-top: 10px;">
-                <label for="reg-password">Password:</label>
-                <input type="password" id="reg-password" required>
-            </div>
-            <button type="submit" style="margin-top: 10px;">Register</button>
-        </form>
-        <p class="auth-toggle" onclick="toggleAuthForms()">Already have an account? Login here</p>
-    </div>
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <div class="container">
+            <p class="mb-0">Employee Management System &copy; {% now "Y" %}</p>
+        </div>
+    </footer>
 
-    <div id="employeeList" class="hidden">
-        <h2>Employee List</h2>
-        <div id="empList"></div>
-    </div>
-
-    <script>
-        // Store token in session storage
-        let token = sessionStorage.getItem('authToken');
-        
-        // Check if user is already logged in
-        if (token) {
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('registerForm').classList.add('hidden');
-            document.getElementById('employeeList').classList.remove('hidden');
-            fetchEmployees();
-        }
-
-        function toggleAuthForms() {
-            document.getElementById('loginForm').classList.toggle('hidden');
-            document.getElementById('registerForm').classList.toggle('hidden');
-        }
-
-        // Handle login form submission
-        document.getElementById('authForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            axios.post('/api/auth/token/', {
-                username: username,
-                password: password
-            })
-            .then(response => {
-                token = response.data.token;
-                sessionStorage.setItem('authToken', token);
-                
-                document.getElementById('loginForm').classList.add('hidden');
-                document.getElementById('registerForm').classList.add('hidden');
-                document.getElementById('employeeList').classList.remove('hidden');
-                
-                fetchEmployees();
-            })
-            .catch(error => {
-                alert('Login failed. Please check your credentials.');
-                console.error(error);
-            });
-        });
-
-        // Handle registration form submission
-        document.getElementById('regForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('reg-username').value;
-            const email = document.getElementById('reg-email').value;
-            const password = document.getElementById('reg-password').value;
-            
-            axios.post('/api/auth/register/', {
-                username: username,
-                email: email,
-                password: password
-            })
-            .then(response => {
-                token = response.data.token;
-                sessionStorage.setItem('authToken', token);
-                
-                document.getElementById('loginForm').classList.add('hidden');
-                document.getElementById('registerForm').classList.add('hidden');
-                document.getElementById('employeeList').classList.remove('hidden');
-                
-                fetchEmployees();
-                alert('Registration successful!');
-            })
-            .catch(error => {
-                alert('Registration failed. Please try again.');
-                console.error(error);
-            });
-        });
-
-        // Fetch employees from API
-        function fetchEmployees() {
-            axios.get('/api/employees/', {
-                headers: {
-                    'Authorization': `Token ${token}`
-                }
-            })
-            .then(response => {
-                const list = document.getElementById("empList");
-                list.innerHTML = '';
-                
-                if (response.data.length === 0) {
-                    list.innerHTML = '<p>No employees found.</p>';
-                    return;
-                }
-                
-                response.data.forEach(emp => {
-                    const div = document.createElement("div");
-                    div.className = 'employee-item';
-                    div.innerHTML = `
-                        <strong>${emp.name}</strong> (ID: ${emp.employee_id})<br>
-                        Department: ${emp.department_name || 'Unknown'}<br>
-                        Position: ${emp.designation}<br>
-                        Email: ${emp.email}
-                    `;
-                    list.appendChild(div);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching employees:', error);
-                if (error.response && error.response.status === 401) {
-                    // Token expired or invalid
-                    sessionStorage.removeItem('authToken');
-                    document.getElementById('loginForm').classList.remove('hidden');
-                    document.getElementById('employeeList').classList.add('hidden');
-                    alert('Your session has expired. Please login again.');
-                }
-            });
-        }
-    </script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
