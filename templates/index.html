@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Employee Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .employee-item { margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        #loginForm, #registerForm, #employeeList { margin-top: 20px; }
+        .hidden { display: none; }
+        .auth-toggle { margin-top: 10px; color: blue; cursor: pointer; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>Employee Management System</h1>
+    
+    <div id="loginForm">
+        <h2>Login</h2>
+        <form id="authForm">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" required>
+            </div>
+            <div style="margin-top: 10px;">
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" style="margin-top: 10px;">Login</button>
+        </form>
+        <p class="auth-toggle" onclick="toggleAuthForms()">Don't have an account? Register here</p>
+    </div>
+
+    <div id="registerForm" class="hidden">
+        <h2>Register</h2>
+        <form id="regForm">
+            <div>
+                <label for="reg-username">Username:</label>
+                <input type="text" id="reg-username" required>
+            </div>
+            <div style="margin-top: 10px;">
+                <label for="reg-email">Email:</label>
+                <input type="email" id="reg-email" required>
+            </div>
+            <div style="margin-top: 10px;">
+                <label for="reg-password">Password:</label>
+                <input type="password" id="reg-password" required>
+            </div>
+            <button type="submit" style="margin-top: 10px;">Register</button>
+        </form>
+        <p class="auth-toggle" onclick="toggleAuthForms()">Already have an account? Login here</p>
+    </div>
+
+    <div id="employeeList" class="hidden">
+        <h2>Employee List</h2>
+        <div id="empList"></div>
+    </div>
+
+    <script>
+        // Store token in session storage
+        let token = sessionStorage.getItem('authToken');
+        
+        // Check if user is already logged in
+        if (token) {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('employeeList').classList.remove('hidden');
+            fetchEmployees();
+        }
+
+        function toggleAuthForms() {
+            document.getElementById('loginForm').classList.toggle('hidden');
+            document.getElementById('registerForm').classList.toggle('hidden');
+        }
+
+        // Handle login form submission
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            axios.post('/api/auth/token/', {
+                username: username,
+                password: password
+            })
+            .then(response => {
+                token = response.data.token;
+                sessionStorage.setItem('authToken', token);
+                
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+                document.getElementById('employeeList').classList.remove('hidden');
+                
+                fetchEmployees();
+            })
+            .catch(error => {
+                alert('Login failed. Please check your credentials.');
+                console.error(error);
+            });
+        });
+
+        // Handle registration form submission
+        document.getElementById('regForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('reg-username').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            
+            axios.post('/api/auth/register/', {
+                username: username,
+                email: email,
+                password: password
+            })
+            .then(response => {
+                token = response.data.token;
+                sessionStorage.setItem('authToken', token);
+                
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+                document.getElementById('employeeList').classList.remove('hidden');
+                
+                fetchEmployees();
+                alert('Registration successful!');
+            })
+            .catch(error => {
+                alert('Registration failed. Please try again.');
+                console.error(error);
+            });
+        });
+
+        // Fetch employees from API
+        function fetchEmployees() {
+            axios.get('/api/employees/', {
+                headers: {
+                    'Authorization': `Token ${token}`
+                }
+            })
+            .then(response => {
+                const list = document.getElementById("empList");
+                list.innerHTML = '';
+                
+                if (response.data.length === 0) {
+                    list.innerHTML = '<p>No employees found.</p>';
+                    return;
+                }
+                
+                response.data.forEach(emp => {
+                    const div = document.createElement("div");
+                    div.className = 'employee-item';
+                    div.innerHTML = `
+                        <strong>${emp.name}</strong> (ID: ${emp.employee_id})<br>
+                        Department: ${emp.department_name || 'Unknown'}<br>
+                        Position: ${emp.designation}<br>
+                        Email: ${emp.email}
+                    `;
+                    list.appendChild(div);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching employees:', error);
+                if (error.response && error.response.status === 401) {
+                    // Token expired or invalid
+                    sessionStorage.removeItem('authToken');
+                    document.getElementById('loginForm').classList.remove('hidden');
+                    document.getElementById('employeeList').classList.add('hidden');
+                    alert('Your session has expired. Please login again.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
