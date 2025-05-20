@@ -2,12 +2,23 @@
 
 A Django REST API and web interface for managing employees and departments. This system provides a comprehensive solution for tracking employees, their departments, and related information.
 
-## Deployment
+## Live Demo
 
-This project has been hosted at https://greymatter.pythonanywhere.com/
+This project is hosted and available for use at:
+**[https://greymatter.pythonanywhere.com/](https://greymatter.pythonanywhere.com/)**
 
-You can access the Django Admin Page at https://greymatter.pythonanywhere.com/admin/
-Use Credentials: admin, admin to log-in and you can directly perform CRUD Operations on Employees and Departments models.
+### Demo Access
+- **Web Interface**: [https://greymatter.pythonanywhere.com/](https://greymatter.pythonanywhere.com/)
+- **Admin Interface**: [https://greymatter.pythonanywhere.com/admin/](https://greymatter.pythonanywhere.com/admin/)
+- **API Documentation**:
+  - [https://greymatter.pythonanywhere.com/redoc/](https://greymatter.pythonanywhere.com/redoc/)
+  - [https://greymatter.pythonanywhere.com/swagger/](https://greymatter.pythonanywhere.com/swagger/)
+
+### Demo Credentials
+- **Username**: admin
+- **Password**: admin
+
+You can use these credentials to log in and explore all features, including CRUD operations on Employees and Departments directly from the web interface or admin panel.
 
 ## Features
 
@@ -114,12 +125,14 @@ Use Credentials: admin, admin to log-in and you can directly perform CRUD Operat
    python manage.py runserver
    ```
 
-7. **Access the application**
+7. **Access the application locally**
    - Web Interface: http://127.0.0.1:8000/
    - Admin Interface: http://127.0.0.1:8000/admin/
    - API Documentation:
      - ReDoc: http://127.0.0.1:8000/redoc/
      - Swagger UI: http://127.0.0.1:8000/swagger/
+
+   > **Note**: These are local URLs when running the development server. For the live demo, use the URLs mentioned in the [Live Demo](#live-demo) section.
 
 ### Configuration (Optional)
 
@@ -129,13 +142,24 @@ Use Credentials: admin, admin to log-in and you can directly perform CRUD Operat
 
 ## API Endpoints
 
+The API is available at both the live demo site and locally when running the development server.
+
+- **Live API Base URL**: `https://greymatter.pythonanywhere.com/api/`
+- **Local API Base URL**: `http://127.0.0.1:8000/api/` (when running locally)
+
 ### Authentication
 
 - **Register User**: `POST /api/auth/register/`
+  - Example:
+    - Live: `https://greymatter.pythonanywhere.com/api/auth/register/`
+    - Local: `http://127.0.0.1:8000/api/auth/register/`
   - Request Body: `{"name": "username", "email": "user@example.com", "password": "password"}`
   - Response: `{"token": "auth-token", "user_id": 1, "email": "user@example.com"}`
 
 - **Get Auth Token**: `POST /api/auth/token/`
+  - Example:
+    - Live: `https://greymatter.pythonanywhere.com/api/auth/token/`
+    - Local: `http://127.0.0.1:8000/api/auth/token/`
   - Request Body: `{"username": "username", "password": "password"}`
   - Response: `{"token": "auth-token", "user_id": 1, "email": "user@example.com"}`
 
@@ -187,40 +211,72 @@ Use Credentials: admin, admin to log-in and you can directly perform CRUD Operat
   - Headers: `Authorization: Token <auth-token>`
   - Response: 204 No Content
 
+> **Note**: For testing the API, you can use tools like Postman or cURL. The Swagger UI and ReDoc documentation provide interactive interfaces to explore and test the API endpoints.
+
 ## Web Interface
 
-The web interface provides a user-friendly way to manage employees and departments:
+The web interface provides a user-friendly way to manage employees and departments. It's available both on the live demo site and locally when running the development server.
 
 ### Authentication Pages
-- **Login Page**: http://127.0.0.1:8000/login/
+
+- **Login Page**:
+  - Live: [https://greymatter.pythonanywhere.com/login/](https://greymatter.pythonanywhere.com/login/)
+  - Local: http://127.0.0.1:8000/login/ (when running locally)
   - User authentication with username and password
   - Link to registration page for new users
-- **Register Page**: http://127.0.0.1:8000/register/
+
+- **Register Page**:
+  - Live: [https://greymatter.pythonanywhere.com/register/](https://greymatter.pythonanywhere.com/register/)
+  - Local: http://127.0.0.1:8000/register/ (when running locally)
   - New user registration with username, email, and password
   - Validation to prevent duplicate usernames/emails
-- **Logout**: http://127.0.0.1:8000/logout/
+
+- **Logout**:
+  - Live: [https://greymatter.pythonanywhere.com/logout/](https://greymatter.pythonanywhere.com/logout/)
+  - Local: http://127.0.0.1:8000/logout/ (when running locally)
 
 ### Dashboard
-- **Home/Dashboard**: http://127.0.0.1:8000/
+
+- **Home/Dashboard**:
+  - Live: [https://greymatter.pythonanywhere.com/](https://greymatter.pythonanywhere.com/)
+  - Local: http://127.0.0.1:8000/ (when running locally)
   - Overview of all employees and departments
   - Quick access buttons for all CRUD operations
   - Responsive layout that works on mobile devices
 
 ### Employee Management
-- **Add Employee**: http://127.0.0.1:8000/employees/add/
+
+- **Add Employee**:
+  - Live: [https://greymatter.pythonanywhere.com/employees/add/](https://greymatter.pythonanywhere.com/employees/add/)
+  - Local: http://127.0.0.1:8000/employees/add/ (when running locally)
   - Form to create new employees
   - Dropdown to select department
-- **Edit Employee**: http://127.0.0.1:8000/employees/{id}/edit/
+
+- **Edit Employee**:
+  - Live: https://greymatter.pythonanywhere.com/employees/{id}/edit/
+  - Local: http://127.0.0.1:8000/employees/{id}/edit/ (when running locally)
   - Form to update existing employee details
-- **Delete Employee**: http://127.0.0.1:8000/employees/{id}/delete/
+
+- **Delete Employee**:
+  - Live: https://greymatter.pythonanywhere.com/employees/{id}/delete/
+  - Local: http://127.0.0.1:8000/employees/{id}/delete/ (when running locally)
   - Confirmation page before deletion
 
 ### Department Management
-- **Add Department**: http://127.0.0.1:8000/departments/add/
+
+- **Add Department**:
+  - Live: [https://greymatter.pythonanywhere.com/departments/add/](https://greymatter.pythonanywhere.com/departments/add/)
+  - Local: http://127.0.0.1:8000/departments/add/ (when running locally)
   - Form to create new departments
-- **Edit Department**: http://127.0.0.1:8000/departments/{id}/edit/
+
+- **Edit Department**:
+  - Live: https://greymatter.pythonanywhere.com/departments/{id}/edit/
+  - Local: http://127.0.0.1:8000/departments/{id}/edit/ (when running locally)
   - Form to update existing department details
-- **Delete Department**: http://127.0.0.1:8000/departments/{id}/delete/
+
+- **Delete Department**:
+  - Live: https://greymatter.pythonanywhere.com/departments/{id}/delete/
+  - Local: http://127.0.0.1:8000/departments/{id}/delete/ (when running locally)
   - Confirmation page before deletion
 
 ## Models
@@ -242,6 +298,8 @@ The web interface provides a user-friendly way to manage employees and departmen
 ## Web-based CRUD Operations
 
 One of the key features of this application is the ability to perform CRUD operations directly from the web interface without needing to use the Django admin site.
+
+> **Try it live**: You can try these CRUD operations on the live demo at [https://greymatter.pythonanywhere.com/](https://greymatter.pythonanywhere.com/) using the demo credentials provided in the [Live Demo](#live-demo) section.
 
 ### Employee Management
 - **Create**: Click the "+" button in the Employee List header to add a new employee
