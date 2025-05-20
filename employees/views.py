@@ -6,12 +6,15 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render, redirect
-from django.views.generic import View
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import View, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Employee, Department
 from .serializers import EmployeeSerializer, DepartmentSerializer, UserSerializer
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from .forms import EmployeeForm, DepartmentForm
 
 class EmployeeViewSet(viewsets.ModelViewSet):
     """
@@ -219,3 +222,57 @@ class WebRegisterView(View):
 
         # Redirect to home
         return redirect('home')
+
+# Employee CRUD Views
+class EmployeeCreateView(LoginRequiredMixin, CreateView):
+    """
+    View for creating a new employee
+    """
+    model = Employee
+    form_class = EmployeeForm
+    template_name = 'employee_form.html'
+    success_url = reverse_lazy('home')
+
+class EmployeeUpdateView(LoginRequiredMixin, UpdateView):
+    """
+    View for updating an existing employee
+    """
+    model = Employee
+    form_class = EmployeeForm
+    template_name = 'employee_form.html'
+    success_url = reverse_lazy('home')
+
+class EmployeeDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    View for deleting an employee
+    """
+    model = Employee
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('home')
+
+# Department CRUD Views
+class DepartmentCreateView(LoginRequiredMixin, CreateView):
+    """
+    View for creating a new department
+    """
+    model = Department
+    form_class = DepartmentForm
+    template_name = 'department_form.html'
+    success_url = reverse_lazy('home')
+
+class DepartmentUpdateView(LoginRequiredMixin, UpdateView):
+    """
+    View for updating an existing department
+    """
+    model = Department
+    form_class = DepartmentForm
+    template_name = 'department_form.html'
+    success_url = reverse_lazy('home')
+
+class DepartmentDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    View for deleting a department
+    """
+    model = Department
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('home')
