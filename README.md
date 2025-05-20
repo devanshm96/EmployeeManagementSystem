@@ -2,6 +2,10 @@
 
 A Django REST API and web interface for managing employees and departments. This system provides a comprehensive solution for tracking employees, their departments, and related information.
 
+## Deployment
+
+This project has been hosted at https://greymatter.pythonanywhere.com/
+
 ## Features
 
 - Token-based authentication (login/register/logout)
