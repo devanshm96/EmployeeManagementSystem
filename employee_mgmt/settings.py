@@ -3,7 +3,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'your-secret-key'
-DEBUG = True
+# DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = [
     '*',
     'greymatter.pythonanywhere.com'
