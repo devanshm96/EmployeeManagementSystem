@@ -1,6 +1,6 @@
 # Employee Management System
 
-A Django REST API and web interface for managing employees and departments. This system provides a comprehensive solution for tracking employees, their departments, and related information.
+A Django REST API and web interface for managing employees and departments. This system provides a simple solution for tracking employees, their departments, and related information.
 
 ## Live Demo
 
