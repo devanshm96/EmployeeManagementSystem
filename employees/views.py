@@ -14,24 +14,75 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 class EmployeeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for managing employees.
+
+    list:
+    Return a list of all employees.
+
+    create:
+    Create a new employee.
+
+    retrieve:
+    Return the given employee.
+
+    update:
+    Update the given employee.
+
+    partial_update:
+    Partially update the given employee.
+
+    destroy:
+    Delete the given employee.
+    """
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     permission_classes = [IsAuthenticated]
 
 
 class DepartmentViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for managing departments.
+
+    list:
+    Return a list of all departments.
+
+    create:
+    Create a new department.
+
+    retrieve:
+    Return the given department.
+
+    update:
+    Update the given department.
+
+    partial_update:
+    Partially update the given department.
+
+    destroy:
+    Delete the given department.
+    """
     queryset = Department.objects.all()
     serializer_class = DepartmentSerializer
     permission_classes = [IsAuthenticated]
 
 class CustomAuthToken(ObtainAuthToken):
+    """
+    API endpoint for obtaining an authentication token.
+
+    post:
+    Create a new authentication token for the given user.
+    """
     permission_classes = [AllowAny]  # Allow anyone to get a token
 
     def post(self, request, *args, **kwargs):
+        """
+        Create a new authentication token for the given user.
+        """
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
+        token, _ = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
             'user_id': user.pk,
@@ -40,13 +91,32 @@ class CustomAuthToken(ObtainAuthToken):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RegisterView(views.APIView):
+    """
+    API endpoint for registering a new user.
+
+    post:
+    Create a new user and return an authentication token.
+    """
     permission_classes = [AllowAny]
 
     def post(self, request):
+        """
+        Create a new user and return an authentication token.
+
+        Parameters:
+        - name: Username for the new user
+        - email: Email address for the new user
+        - password: Password for the new user
+
+        Returns:
+        - token: Authentication token for the new user
+        - user_id: ID of the new user
+        - email: Email address of the new user
+        """
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            token, created = Token.objects.get_or_create(user=user)
+            token, _ = Token.objects.get_or_create(user=user)
             return Response({
                 'token': token.key,
                 'user_id': user.pk,
@@ -141,8 +211,8 @@ class WebRegisterView(View):
         # Create user
         user = User.objects.create_user(username=name, email=email, password=password)
 
-        # Create token
-        token, created = Token.objects.get_or_create(user=user)
+        # Create token (we don't need to use the token in the web interface)
+        Token.objects.get_or_create(user=user)
 
         # Log the user in
         login(request, user)
