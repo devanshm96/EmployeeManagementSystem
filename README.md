@@ -6,6 +6,9 @@ A Django REST API and web interface for managing employees and departments. This
 
 This project has been hosted at https://greymatter.pythonanywhere.com/
 
+You can access the Django Admin Page at https://greymatter.pythonanywhere.com/admin/
+Use Credentials: admin, admin to log-in
+
 ## Features
 
 - Token-based authentication (login/register/logout)
