@@ -4,29 +4,73 @@ A Django REST API and web interface for managing employees and departments. This
 
 ## Deployment
 
-This project has been hosted at https://greymatter.pythonanywhere.com/ 
+This project has been hosted at https://greymatter.pythonanywhere.com/
 
 You can access the Django Admin Page at https://greymatter.pythonanywhere.com/admin/
 Use Credentials: admin, admin to log-in and you can directly perform CRUD Operations on Employees and Departments models.
 
 ## Features
 
-- Token-based authentication (login/register/logout)
-- CRUD operations for Employees and Departments via RESTful API
-- Responsive Bootstrap web UI for listing employees and departments
-- Admin interface for managing data
-- Filtering and search capabilities
-- Secure API endpoints with token authentication
+- **Authentication System**
+  - User registration and login functionality
+  - Token-based authentication for API access
+  - Session-based authentication for web interface
+
+- **Web Interface**
+  - Responsive Bootstrap 5 UI with modern design
+  - Dashboard showing employees and departments
+  - Direct CRUD operations from the web interface:
+    - Add, edit, and delete employees
+    - Add, edit, and delete departments
+  - User-friendly forms with validation
+  - Mobile-responsive design
+
+- **API Features**
+  - RESTful API for Employees and Departments
+  - Token-based authentication
+  - Comprehensive API documentation with Swagger and ReDoc
+  - Filtering and search capabilities
+  - Secure endpoints with proper authentication
+
+- **Admin Interface**
+  - Django admin interface for advanced management
+  - User management
+  - Data export/import capabilities
 
 ## Technology Stack
 
-- **Backend**: Django 5.2.1, Django REST Framework 3.16.0
-- **Database**: SQLite (default), can be configured for other databases
-- **Frontend**: Bootstrap 5.3, HTML, CSS
-- **Authentication**: Token-based authentication
-- **Documentation**: drf-yasg for API documentation
+- **Backend**
+  - Django 5.2.1 - Python web framework
+  - Django REST Framework 3.16.0 - API toolkit
+  - drf-yasg - Swagger/OpenAPI documentation generator
+
+- **Frontend**
+  - Bootstrap 5.3 - CSS framework for responsive design
+  - HTML5 & CSS3 - Frontend markup and styling
+  - JavaScript - Client-side interactivity
+  - Bootstrap Icons - Icon library
+
+- **Database**
+  - SQLite (default) - Development database
+  - Can be configured for PostgreSQL, MySQL, or other databases for production
+
+- **Authentication**
+  - Django's built-in authentication system
+  - Token-based authentication for API
+  - Session-based authentication for web interface
+
+- **Development Tools**
+  - Git - Version control
+  - Django Debug Toolbar (optional) - Development debugging
 
 ## Setup
+
+### Prerequisites
+- Python 3.8 or higher
+- pip (Python package manager)
+- Git
+
+### Installation Steps
 
 1. **Clone the repository**
    ```bash
@@ -34,10 +78,15 @@ Use Credentials: admin, admin to log-in and you can directly perform CRUD Operat
    cd employee_mgmt
    ```
 
-2. **Create and activate a virtual environment (optional but recommended)**
+2. **Create and activate a virtual environment**
    ```bash
+   # On Linux/macOS
    python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   source venv/bin/activate
+
+   # On Windows
+   python -m venv venv
+   venv\Scripts\activate
    ```
 
 3. **Install dependencies**
@@ -45,14 +94,19 @@ Use Credentials: admin, admin to log-in and you can directly perform CRUD Operat
    pip install -r requirements.txt
    ```
 
-4. **Run migrations**
+4. **Set up the database**
    ```bash
+   # Apply migrations
    python manage.py migrate
+
+   # Load initial data (optional)
+   python manage.py loaddata initial_data.json  # If you have fixture data
    ```
 
-5. **Create a superuser**
+5. **Create a superuser for admin access**
    ```bash
    python manage.py createsuperuser
+   # Follow the prompts to create an admin user
    ```
 
 6. **Run the development server**
@@ -63,7 +117,15 @@ Use Credentials: admin, admin to log-in and you can directly perform CRUD Operat
 7. **Access the application**
    - Web Interface: http://127.0.0.1:8000/
    - Admin Interface: http://127.0.0.1:8000/admin/
-   - API Documentation: http://127.0.0.1:8000/redoc/
+   - API Documentation:
+     - ReDoc: http://127.0.0.1:8000/redoc/
+     - Swagger UI: http://127.0.0.1:8000/swagger/
+
+### Configuration (Optional)
+
+- **Environment Variables**: Create a `.env` file in the project root for environment-specific settings
+- **Database Configuration**: Edit `settings.py` to configure a different database backend
+- **Email Configuration**: Configure email settings in `settings.py` for password reset functionality
 
 ## API Endpoints
 
@@ -127,13 +189,39 @@ Use Credentials: admin, admin to log-in and you can directly perform CRUD Operat
 
 ## Web Interface
 
-The web interface provides a user-friendly way to view employees and departments:
+The web interface provides a user-friendly way to manage employees and departments:
 
+### Authentication Pages
 - **Login Page**: http://127.0.0.1:8000/login/
-- **Home/Dashboard**: http://127.0.0.1:8000/
-  - Displays a list of all employees with their details
-  - Shows all departments
+  - User authentication with username and password
+  - Link to registration page for new users
+- **Register Page**: http://127.0.0.1:8000/register/
+  - New user registration with username, email, and password
+  - Validation to prevent duplicate usernames/emails
 - **Logout**: http://127.0.0.1:8000/logout/
+
+### Dashboard
+- **Home/Dashboard**: http://127.0.0.1:8000/
+  - Overview of all employees and departments
+  - Quick access buttons for all CRUD operations
+  - Responsive layout that works on mobile devices
+
+### Employee Management
+- **Add Employee**: http://127.0.0.1:8000/employees/add/
+  - Form to create new employees
+  - Dropdown to select department
+- **Edit Employee**: http://127.0.0.1:8000/employees/{id}/edit/
+  - Form to update existing employee details
+- **Delete Employee**: http://127.0.0.1:8000/employees/{id}/delete/
+  - Confirmation page before deletion
+
+### Department Management
+- **Add Department**: http://127.0.0.1:8000/departments/add/
+  - Form to create new departments
+- **Edit Department**: http://127.0.0.1:8000/departments/{id}/edit/
+  - Form to update existing department details
+- **Delete Department**: http://127.0.0.1:8000/departments/{id}/delete/
+  - Confirmation page before deletion
 
 ## Models
 
@@ -151,6 +239,29 @@ The web interface provides a user-friendly way to view employees and departments
 - `department_id`: Unique identifier for the department
 - `name`: Department name
 
+## Web-based CRUD Operations
+
+One of the key features of this application is the ability to perform CRUD operations directly from the web interface without needing to use the Django admin site.
+
+### Employee Management
+- **Create**: Click the "+" button in the Employee List header to add a new employee
+- **Read**: All employees are displayed on the dashboard with their details
+- **Update**: Click the edit (pencil) icon next to any employee to modify their details
+- **Delete**: Click the delete (trash) icon next to any employee to remove them
+
+### Department Management
+- **Create**: Click the "+" button in the Departments header to add a new department
+- **Read**: All departments are displayed on the dashboard
+- **Update**: Click the edit (pencil) icon next to any department to modify its details
+- **Delete**: Click the delete (trash) icon next to any department to remove it
+
+## Security Features
+
+- **Authentication Required**: All CRUD operations require user authentication
+- **CSRF Protection**: All forms are protected against Cross-Site Request Forgery
+- **Form Validation**: Input validation on all forms to prevent invalid data
+- **Secure Password Handling**: Passwords are securely hashed and never stored in plaintext
+
 ## Contributing
 
 1. Fork the repository
@@ -162,3 +273,9 @@ The web interface provides a user-friendly way to view employees and departments
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgements
+
+- Django and Django REST Framework communities
+- Bootstrap team for the excellent UI framework
+- All contributors who have helped improve this project
